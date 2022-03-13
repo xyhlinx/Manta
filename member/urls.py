@@ -1,12 +1,12 @@
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.urls import re_path, include
-from inventory.views import InventoryList
+from member.views import MemberList
 
 
-app_name = 'inventory'
+app_name = 'member'
 
 urlpatterns = [
-    re_path(r'^$', InventoryList.as_view(), name='inventory_list'),
+    re_path(r'^$', MemberList.as_view(), name='member_list'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

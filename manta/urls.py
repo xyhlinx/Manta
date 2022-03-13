@@ -22,5 +22,5 @@ router = routers.DefaultRouter()
 urlpatterns = [
     re_path(r'', include(router.urls)),
     re_path(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'^api/inventory/', include('inventory.urls', namespace='inventory'))
+    re_path(r'^api/member/', include('member.urls', namespace='member'))
 ]
