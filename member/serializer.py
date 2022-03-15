@@ -29,7 +29,7 @@ class GroupSerializer(serializers.Serializer):
         fields = ('id', )
 
 
-class TagSerializer(serializers.Serializer):
+class TagDetailSerializer(serializers.Serializer):
     id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     name = serializers.CharField(max_length=200)
     users = UserSerializer(many=True, read_only=True)

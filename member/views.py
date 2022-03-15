@@ -1,16 +1,15 @@
-from lib.tags_filter import TagFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from member.models import Tag
-from member.serializer import TagSerializer, UserSerializer
+from member.serializer import TagDetailSerializer, UserSerializer
 from rest_framework import status
 from django.contrib.auth.models import Group, User
 
 
-class TagList(ListAPIView, CreateAPIView):
+class TagListCreate(ListAPIView, CreateAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+    serializer_class = TagDetailSerializer
     filter_backends = (DjangoFilterBackend,)
 
     # filter_class = tags_filter
@@ -19,7 +18,7 @@ class TagList(ListAPIView, CreateAPIView):
         return self.list(request)
 
     def post(self, request, *args, **kwargs):
-        serializer = TagSerializer(data=request.data)
+        serializer = TagDetailSerializer(data=request.data)
         if serializer.is_valid():
             tag_obj = serializer.save()
             user_ids = request.data.get('users', [])
@@ -34,14 +33,20 @@ class TagList(ListAPIView, CreateAPIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class MemberDetail(DestroyAPIView):
+class TagDetail(ListAPIView):
     queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-    filter_backends = (DjangoFilterBackend,)
+    serializer_class = TagDetailSerializer
+
+    def get(self, request, pk):
+        tag_instance = self.queryset.filter(id=pk)
+        if tag_instance:
+            serializer = TagDetailSerializer(tag_instance[0])
+            return Response(serializer.data)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class UserList(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, )
 
