@@ -4,8 +4,8 @@ python3 -m venv myvenv
 ```
 ## installation
 ```commandline
-pip install -r requirements.txt
 source ./myvenv/bin/activate
+pip install -r requirements.txt
 ./manage.py makemigrations
 ./manage.py migrate
 ```
